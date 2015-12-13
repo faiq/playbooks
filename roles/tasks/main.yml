@@ -1,0 +1,14 @@
+- name: Add Nginx Repository
+    apt_repository: repo'ppa:nginx/stable' state=present
+    register: ppastable
+
+- name: Install Nginx
+    apt: pkg=nginx state=installed update_cache=true
+    when: ppstable
+    register: nginxinstalled 
+    notify: 
+        - Nginx Start  
+
+- name: Disable Sites Enabled
+    when: nginxinstalled|success
+    file:/etc/nginx/sites-enabled/default state=absent
